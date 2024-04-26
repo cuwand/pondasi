@@ -47,3 +47,9 @@ func GetEnvAndValidate(key string) string {
 
 	return value
 }
+
+func GetEnv(key string) string {
+	value := os.Getenv(key)
+
+	return value
+}

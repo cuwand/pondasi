@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestStringHelper(t *testing.T)  {
+func TestStringHelper(t *testing.T) {
 
 	randomAlphaNumeric, err := RandomAlphaNumeric(23)
 

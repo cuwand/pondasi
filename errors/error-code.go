@@ -29,7 +29,7 @@ func init() {
 	err := json.Unmarshal(plan, &errCodes)
 
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 
 	for _, errCode := range errCodes {

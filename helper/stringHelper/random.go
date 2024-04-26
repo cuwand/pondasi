@@ -26,12 +26,18 @@ func randomStringSet(n int, set string) (string, error) {
 	return string(bytes), nil
 }
 
-func RandomAlphaNumeric(n int) (string, error) {
+func RandomAlphaNumeric(n int) string {
 	const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-	return randomStringSet(n, letters)
+
+	str, _ := randomStringSet(n, letters)
+
+	return str
 }
 
-func RandomNumericString(n int) (string, error) {
+func RandomNumericString(n int) string {
 	const letters = "0123456789"
-	return randomStringSet(n, letters)
+
+	str, _ := randomStringSet(n, letters)
+
+	return str
 }

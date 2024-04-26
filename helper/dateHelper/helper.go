@@ -19,6 +19,31 @@ func TimeNowUTC() time.Time {
 	return time.Now().In(loc).UTC()
 }
 
+func ToLocalTimeZone(val time.Time) time.Time {
+	locName := envHelper.GetEnvAndValidate("TZ")
+	loc, _ := time.LoadLocation(locName)
+
+	return val.In(loc)
+}
+
+// time database to Asia/Jakarta
+func TimeToString(dateTime time.Time) string {
+	locName := envHelper.GetEnvAndValidate("TZ")
+	loc, _ := time.LoadLocation(locName)
+
+	return dateTime.In(loc).Format(DateTimeFormat)
+}
+
+func StringToTime(dateTimeStr string) time.Time {
+	dateTime, err := time.Parse(DateTimeFormat, dateTimeStr)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return dateTime
+}
+
 func BeginingOfDay() time.Time {
 	timeNow := TimeNow()
 
