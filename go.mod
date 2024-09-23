@@ -9,6 +9,7 @@ require (
 	github.com/bpdlampung/banklampung-core-backend-go v1.0.18
 	github.com/cariapo/cservice v0.0.1 // indirect
 	github.com/dustin/go-humanize v1.0.0
+	github.com/eclipse/paho.mqtt.golang v1.4.3 // indirect
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-jwt/jwt/v4 v4.4.3
