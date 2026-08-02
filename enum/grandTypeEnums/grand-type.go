@@ -13,6 +13,7 @@ const (
 	CLIENT_CREDENTIAL  GrandType = `client_credentials`
 	PASSWORD           GrandType = `password`
 	REFRESH_TOKEN      GrandType = `refresh_token`
+	GOOGLE             GrandType = `google`
 )
 
 func FromString(str string) GrandType {
@@ -27,6 +28,8 @@ func FromString(str string) GrandType {
 		return PASSWORD
 	case "refresh_token":
 		return REFRESH_TOKEN
+	case "google":
+		return GOOGLE
 	default:
 		return "undefined"
 	}
@@ -44,6 +47,8 @@ func (s *GrandType) String() string {
 		return "password"
 	case REFRESH_TOKEN:
 		return "refresh_token"
+	case GOOGLE:
+		return "google"
 	default:
 		return "undefined"
 	}
@@ -60,10 +65,10 @@ func (s *GrandType) UnmarshalJSON(data []byte) error {
 
 	// Validate the valid enum values
 	switch *s {
-	case IMPLICIT, AUTHORIZATION_CODE, CLIENT_CREDENTIAL, PASSWORD, REFRESH_TOKEN:
+	case IMPLICIT, AUTHORIZATION_CODE, CLIENT_CREDENTIAL, PASSWORD, REFRESH_TOKEN, GOOGLE:
 		return nil
 	default:
 		*s = ""
-		return errors.BadRequest("invalid value for IMPLICIT, AUTHORIZATION_CODE, CLIENT_CREDENTIAL, PASSWORD, REFRESH_TOKEN")
+		return errors.BadRequest("invalid value for IMPLICIT, AUTHORIZATION_CODE, CLIENT_CREDENTIAL, PASSWORD, REFRESH_TOKEN, GOOGLE")
 	}
 }

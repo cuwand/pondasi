@@ -1,6 +1,9 @@
 package mongodb
 
-import "context"
+import (
+	"context"
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 // Collections is mongodb's collection of function
 type Collections interface {
@@ -12,4 +15,5 @@ type Collections interface {
 	UpdateOne(payload UpdateOne, ctx context.Context) error
 	Aggregate(payload Aggregate, ctx context.Context) error
 	DeleteOne(payload DeleteOne, ctx context.Context) error
+	Collection() *mongo.Collection
 }

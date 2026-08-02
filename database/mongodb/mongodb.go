@@ -56,9 +56,9 @@ func (m MongoDBLogger) Find(payload Find, ctx context.Context) error {
 	findOption.Limit = &payload.Size
 	findOption.Skip = payload.generateOptionSkip()
 
-	j, _ := json.Marshal(payload.Filter)
-	msg := fmt.Sprintf("query: %s", string(j))
-	m.mongodb.logger.Debug(msg)
+	//j, _ := json.Marshal(payload.Filter)
+	//msg := fmt.Sprintf("query: %s", string(j))
+	//m.mongodb.logger.Debug(msg)
 
 	cursor, err := collection.Find(ctx, payload.Filter, findOption)
 
@@ -96,9 +96,10 @@ func (m MongoDBLogger) Find(payload Find, ctx context.Context) error {
 		}
 	}
 
-	marshaledResp, _ := json.Marshal(payload.Result)
-	marshaledCount, _ := json.Marshal(payload.CountData)
-	m.mongodb.logger.Info(fmt.Sprintf("Success Find Collection: %s, Filter: %s, Result: %s, CountData: %s", m.collectionName, payload.Filter, string(marshaledResp), string(marshaledCount)))
+	//marshaledResp, _ := json.Marshal(payload.Result)
+
+	//marshaledCount, _ := json.Marshal(payload.CountData)
+	//m.mongodb.logger.Debug(fmt.Sprintf("Success Find Collection: %s, Filter: %s, CountData: %s", m.collectionName, payload.Filter, string(marshaledCount)))
 
 	return nil
 }
@@ -161,7 +162,7 @@ func (m MongoDBLogger) FindAll(payload FindAll, ctx context.Context) error {
 
 	marshaledResp, _ := json.Marshal(payload.Result)
 	marshaledCount, _ := json.Marshal(payload.CountData)
-	m.mongodb.logger.Info(fmt.Sprintf("Success Find Collection: %s, Filter: %s, Result: %s, CountData: %s", m.collectionName, payload.Filter, string(marshaledResp), string(marshaledCount)))
+	m.mongodb.logger.Debug(fmt.Sprintf("Success Find Collection: %s, Filter: %s, Result: %s, CountData: %s", m.collectionName, payload.Filter, string(marshaledResp), string(marshaledCount)))
 
 	return nil
 }
@@ -233,8 +234,8 @@ func (m MongoDBLogger) FindOne(payload FindOne, ctx context.Context) error {
 		m.mongodb.logger.Debug(msg)
 	}
 
-	marshaledResp, _ := json.Marshal(payload.Result)
-	m.mongodb.logger.Info(fmt.Sprintf("Success FindOne Collection: %s, Filter: %s, Result: %s", m.collectionName, payload.Filter, string(marshaledResp)))
+	//marshaledResp, _ := json.Marshal(payload.Result)
+	//m.mongodb.logger.Debug(fmt.Sprintf("Success FindOne Collection: %s, Filter: %s, Result: %s", m.collectionName, payload.Filter, string(marshaledResp)))
 
 	return nil
 }
@@ -275,7 +276,7 @@ func (m MongoDBLogger) InsertOne(payload InsertOne, ctx context.Context) error {
 		m.mongodb.logger.Debug(msg)
 	}
 
-	m.mongodb.logger.Info(fmt.Sprintf("Success InsertOne Collection: %s, Data: %s", m.collectionName, payload.Document))
+	//m.mongodb.logger.Debug(fmt.Sprintf("Success InsertOne Collection: %s, Data: %s", m.collectionName, payload.Document))
 
 	return nil
 }
@@ -322,14 +323,19 @@ func (m MongoDBLogger) UpdateOne(payload UpdateOne, ctx context.Context) error {
 		m.mongodb.logger.Debug(msg)
 	}
 
-	m.mongodb.logger.Info(fmt.Sprintf("Success UpdateOne Collection: %s, Data: %s", m.collectionName, payload.Document))
+	//m.mongodb.logger.Debug(fmt.Sprintf("Success UpdateOne Collection: %s, Data: %s", m.collectionName, payload.Document))
 
 	return nil
 }
 
+func (m MongoDBLogger) Collection() *mongo.Collection {
+	return m.mongodb.client.Database(m.mongodb.dbname).Collection(m.collectionName)
+}
+
 type Aggregate struct {
-	Result interface{}
-	Filter interface{}
+	Result    interface{}
+	CountData *int64
+	Filter    interface{}
 }
 
 func (m MongoDBLogger) Aggregate(payload Aggregate, ctx context.Context) error {
@@ -361,7 +367,7 @@ func (m MongoDBLogger) Aggregate(payload Aggregate, ctx context.Context) error {
 		m.mongodb.logger.Debug(msg)
 	}
 
-	m.mongodb.logger.Info(fmt.Sprintf("Success Aggregate Collection: %s, Data: %s", m.collectionName, payload.Filter))
+	m.mongodb.logger.Debug(fmt.Sprintf("Success Aggregate Collection: %s, Data: %s", m.collectionName, payload.Filter))
 
 	return nil
 }
@@ -399,7 +405,7 @@ func (m MongoDBLogger) DeleteOne(payload DeleteOne, ctx context.Context) error {
 		m.mongodb.logger.Debug(msg)
 	}
 
-	m.mongodb.logger.Info(fmt.Sprintf("Success DeleteOne Collection: %s, Data: %s", m.collectionName, payload.Filter))
+	m.mongodb.logger.Debug(fmt.Sprintf("Success DeleteOne Collection: %s, Data: %s", m.collectionName, payload.Filter))
 
 	return nil
 }

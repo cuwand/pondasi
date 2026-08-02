@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"context"
+
 	"github.com/bpdlampung/banklampung-core-backend-go/helpers/structs"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -10,6 +11,7 @@ type Templates interface {
 	Save(obj interface{}, ctx context.Context) error
 	Update(obj interface{}, ctx context.Context) error
 	FindById(id string, result interface{}, ctx context.Context) error
+	FindByField(field string, value interface{}, result interface{}, ctx context.Context) error
 }
 
 type implementTemplateRepository struct {
@@ -60,14 +62,21 @@ func (i implementTemplateRepository) Update(obj interface{}, ctx context.Context
 }
 
 func (i implementTemplateRepository) FindById(id string, result interface{}, ctx context.Context) error {
-	if err := i.mongodb.FindOne(FindOne{
+	return i.mongodb.FindOne(FindOne{
 		Result: result,
 		Filter: bson.M{
-			"_id": id,
+			"_id":    id,
+			"delete": false,
 		},
-	}, ctx); err != nil {
-		return err
-	}
+	}, ctx)
+}
 
-	return nil
+func (i implementTemplateRepository) FindByField(field string, value interface{}, result interface{}, ctx context.Context) error {
+	return i.mongodb.FindOne(FindOne{
+		Result: result,
+		Filter: bson.M{
+			field:    value,
+			"delete": false,
+		},
+	}, ctx)
 }

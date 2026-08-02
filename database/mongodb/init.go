@@ -10,6 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"reflect"
 	"strings"
+
+	"go.opentelemetry.io/contrib/instrumentation/go.mongodb.org/mongo-driver/mongo/otelmongo"
 )
 
 type Mongodb struct {
@@ -60,6 +62,7 @@ func newClient(mongoUri string) (*mongo.Client, error) {
 		options.Client().SetMaxPoolSize(1000),
 		options.Client().ApplyURI(mongoUri),
 		options.Client().SetRegistry(reg),
+		options.Client().SetMonitor(otelmongo.NewMonitor()),
 	)
 
 	if err != nil {

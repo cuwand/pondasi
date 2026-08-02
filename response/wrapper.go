@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cuwand/pondasi/errors"
-	"github.com/cuwand/pondasi/logger"
-	"github.com/cuwand/pondasi/models"
-	"github.com/gin-gonic/gin"
 	"math"
 	"net/http"
 	"runtime"
 	"time"
+
+	"github.com/cuwand/pondasi/errors"
+	"github.com/cuwand/pondasi/logger"
+	"github.com/cuwand/pondasi/models"
+	"github.com/gin-gonic/gin"
 )
 
 type modelSuccess struct {
@@ -75,11 +76,7 @@ func prettyPrint(b []byte) []byte {
 }
 
 func Success(c *gin.Context, data interface{}) {
-	marshaled, _ := json.Marshal(data)
-
-	prettyData := prettyPrint(marshaled)
-
-	logger.GetAppLogger().InfoInterface(fmt.Sprintf("[RESPONSE] path : %s | response : %s", c.FullPath(), string(prettyData)))
+	logger.GetAppLogger().InfoHttpWithContext(c.Request.Context(), "[RESPONSE]", c.FullPath(), data)
 
 	c.JSON(http.StatusOK, modelSuccess{
 		Data:      data,
@@ -94,11 +91,7 @@ func Success(c *gin.Context, data interface{}) {
 }
 
 func PagingSuccess(c *gin.Context, data interface{}, total int64, pagingFilter models.Paging) {
-	marshaled, _ := json.Marshal(data)
-
-	prettyData := prettyPrint(marshaled)
-
-	logger.GetAppLogger().InfoInterface(fmt.Sprintf("[RESPONSE] path : %s | response : %s", c.FullPath(), string(prettyData)))
+	logger.GetAppLogger().InfoHttpWithContext(c.Request.Context(), "[RESPONSE]", c.FullPath(), data)
 
 	c.JSON(http.StatusOK, modelPagingSuccess{
 		Data: data,
@@ -122,7 +115,7 @@ func Error(c *gin.Context, error error) {
 
 	stacktrace := fmt.Sprintf(" Message: %s", error.Error())
 
-	for i := 1; i <= 7; i++ {
+	for i := 1; i <= 20; i++ {
 		pc, file, line, _ := runtime.Caller(i)
 		f := runtime.FuncForPC(pc)
 		if f == nil || line == 0 {
@@ -165,7 +158,7 @@ func Error(c *gin.Context, error error) {
 }
 
 func ErrorWithMessage(c *gin.Context, statusCode int, messageId, messageEn, errorCode string) {
-	logger.GetAppLogger().Error(messageId)
+	logger.GetAppLogger().ErrorWithContext(c.Request.Context(), messageId)
 
 	c.JSON(statusCode, ModelError{
 		ErrorCode: errorCode,
@@ -184,7 +177,7 @@ func ErrorWithMessage(c *gin.Context, statusCode int, messageId, messageEn, erro
 }
 
 func ErrorWithIdMessage(c *gin.Context, statusCode int, messageId, errorCode string) {
-	logger.GetAppLogger().Error(messageId)
+	logger.GetAppLogger().ErrorWithContext(c.Request.Context(), messageId)
 
 	c.JSON(statusCode, ModelError{
 		ErrorCode: errorCode,
@@ -203,7 +196,7 @@ func ErrorWithIdMessage(c *gin.Context, statusCode int, messageId, errorCode str
 }
 
 func ErrorWithEnMessage(c *gin.Context, statusCode int, messageEn, errorCode string) {
-	logger.GetAppLogger().Error(messageEn)
+	logger.GetAppLogger().ErrorWithContext(c.Request.Context(), messageEn)
 
 	c.JSON(statusCode, ModelError{
 		ErrorCode: errorCode,

@@ -3,16 +3,26 @@ package contextHelper
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/cuwand/pondasi/constant"
+	"github.com/cuwand/pondasi/helper/idHelper"
 	"github.com/cuwand/pondasi/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func SetValueGin(c *gin.Context, key, value string) *http.Request {
 	contextParent := c.Request.Context()
 
 	c.Request = c.Request.WithContext(context.WithValue(contextParent, key, value))
+
+	return c.Request
+}
+
+func SetTraceIdRequestGin(c *gin.Context) *http.Request {
+	contextParent := c.Request.Context()
+
+	c.Request = c.Request.WithContext(context.WithValue(contextParent, constant.X_CORE_TRACE_ID, idHelper.ULID()))
 
 	return c.Request
 }

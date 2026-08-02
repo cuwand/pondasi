@@ -23,8 +23,10 @@ func (ct *DateTime) UnmarshalJSON(b []byte) (err error) {
 		ct.Time = time.Time{}
 		return
 	}
-	loc, _ := time.LoadLocation("Asia/Jakarta")
-	ct.Time, err = time.ParseInLocation(dateHelper.DateTimeFormat, s, loc)
+	//loc, _ := time.LoadLocation("Asia/Jakarta")
+	//ct.Time, err = time.ParseInLocation(dateHelper.DateTimeFormat, s, loc)
+
+	ct.Time, err = time.Parse(dateHelper.DateTimeFormat, s)
 	return
 }
 

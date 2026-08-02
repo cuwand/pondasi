@@ -2,12 +2,13 @@ package logger
 
 import (
 	"fmt"
-	"github.com/rs/zerolog"
 	"io"
 	"os"
 	"path"
 	"strings"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 type LogConfig struct {
