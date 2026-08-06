@@ -4,7 +4,7 @@ go 1.24.0
 
 toolchain go1.24.12
 
-replace github.com/cariapo/cService => ../../@cariapo/backend/cservice
+replace github.com/cariapo/cService => ../cService
 
 require (
 	github.com/MicahParks/keyfunc v1.9.0
